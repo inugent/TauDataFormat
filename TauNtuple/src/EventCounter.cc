@@ -66,15 +66,11 @@ EventCounter::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup)
    if(iEvent.isRealData() && !isEmbedding){
      type=DataMCType::Data;
    }
-   else if(isEmbedding){
-	 type=DataMC_Type_idx;
-	 // splitting by tau decay not yet implemented for embedding
-   }
    else{
      type=DataMC_Type_idx;
      edm::Handle<GenEventInfoProduct> GenEventInfoProduct;
      iEvent.getByLabel("generator",GenEventInfoProduct);
-     w*=GenEventInfoProduct->weight();
+     if(!isEmbedding) w*=GenEventInfoProduct->weight();
      ///////////////////////////////////
      //
      // Check for Signal MC if there are signal taus create a new proccess it based on the 
